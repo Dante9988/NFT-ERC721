@@ -92,7 +92,41 @@ describe('NFT', () => {
                 const NFT = await ethers.getContractFactory('NFT')
                 nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
 
-                await expect(nft.connect(minter).mint(1, {value: ether(1)})).to.be.rejectedWith('Insufficient payment.');
+                await expect(nft.connect(minter).mint(1, {value: ether(1)})).to.be.revertedWith('Insufficient payment.');
+            })
+
+            it('require at least 1 NFT to be minted', async () => {
+                const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10) // now
+                const NFT = await ethers.getContractFactory('NFT')
+                nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+                await expect(nft.connect(minter).mint(0, {value: COST})).to.be.revertedWith('At least 1 NFT required to mint.');
+            })
+
+            it('rejects minting more than max supply', async () => {
+                const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10) // now
+                const NFT = await ethers.getContractFactory('NFT')
+                nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+                // We need to ensure correct ether amount sent: ether(10) per 1 NFT, meanwhile we want more than max supply
+                await expect(nft.connect(minter).mint(26, {value: ether(260)})).to.be.revertedWith("Can't mint more than max supply.");
+            })
+
+            it('rejects minting more than 5 per function call', async () => {
+                const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10) // now
+                const NFT = await ethers.getContractFactory('NFT')
+                nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+                // We need to ensure correct ether amount sent: ether(10) per 1 NFT, meanwhile we want more than max supply
+                await expect(nft.connect(minter).mint(6, {value: ether(60)})).to.be.revertedWith("Can't mint more than 5 NFTs per function call.");
+            })
+
+            it('rejects minting before allowed time', async () => {
+                const ALLOW_MINTING_ON = new Date('Nov 01, 2077 18:00:00').getTime().toString().slice(0, 10) // now
+                const NFT = await ethers.getContractFactory('NFT')
+                nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+                await expect(nft.connect(deployer).mint(1, {value: COST})).to.be.revertedWith('Minting has not started.');
             })
         })
 

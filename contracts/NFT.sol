@@ -26,16 +26,22 @@ contract NFT is ERC721Enumerable, Ownable {
     }
 
     function mint(uint _mintAmount) public payable {
+        // Only allow minting after specified time
+        require(block.timestamp >= allowMintingOn, 'Minting has not started.');
         require(msg.value >= cost * _mintAmount, 'Insufficient payment.');
-        // create a non fungible token 
-        uint supply = totalSupply();
 
+        uint supply = totalSupply();
+        require((supply + _mintAmount) <= maxSupply, "Can't mint more than max supply.");
+
+        require(_mintAmount > 0, 'At least 1 NFT required to mint.');
+        require(_mintAmount < 5, "Can't mint more than 5 NFTs per function call.");
+
+        // create a non fungible token 
         for(uint i = 1; i <= _mintAmount; i++) {
              _safeMint(msg.sender, supply + i);
         }
-
-
     }
 
+    
 
 }
