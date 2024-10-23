@@ -87,8 +87,6 @@ function App() {
         <>
           <Row>
             <Col>
-
-
               {balance > 0 ? (
                 <div className='text-center'>
                   <img src={`https://gateway.pinata.cloud/ipfs/QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/${tokenIds[latestNft]}.png`} alt='Open Punk' width="400px" height="400px" />
@@ -96,7 +94,6 @@ function App() {
               ) : (
                 <img src={preview} alt="" />
               )}
-              
             </Col>
             <Col>
               <div className='my-4 text-center'>
