@@ -3,6 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap'
 import Countdown from 'react-countdown'
 import { ethers } from 'ethers'
 import preview from '../preview.png'
+import '../css/custom.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Components
 import Navigation from './Navigation';
