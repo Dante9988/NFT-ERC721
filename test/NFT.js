@@ -265,7 +265,7 @@ describe('NFT', () => {
         })
     })
 
-    describe('Minting', () => {
+    describe('Pause sale', () => {
 
         let transaction, result;
 

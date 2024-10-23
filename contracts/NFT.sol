@@ -33,6 +33,7 @@ contract NFT is ERC721Enumerable, Ownable {
     function mint(uint _mintAmount) public payable {
         // Only allow minting after specified time
         require(block.timestamp >= allowMintingOn, 'Minting has not started.');
+        //require(_mintAmount > 0, 'At least 1 NFT required to mint.');
         require(msg.value >= cost * _mintAmount, 'Insufficient payment.');
 
         uint supply = totalSupply();
@@ -84,7 +85,4 @@ contract NFT is ERC721Enumerable, Ownable {
     function pauseSale(uint _newTimeStamp) public onlyOwner {
         allowMintingOn = _newTimeStamp;
     }
-
-    
-
 }
