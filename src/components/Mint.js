@@ -3,7 +3,6 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Spinner from 'react-bootstrap/Spinner'
 import InputGroup from 'react-bootstrap/InputGroup'
-import { ethers } from 'ethers'
 
 const Mint = ({ provider, nft, cost, setIsLoading }) => {
 
