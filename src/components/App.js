@@ -35,40 +35,103 @@ function App() {
 
   const loadBlockchainData = async () => {
     // Initiate provider
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    setProvider(provider);
+    // const provider = new ethers.providers.Web3Provider(window.ethereum)
+    // setProvider(provider);
+    // console.log('Provider:', await provider.getNetwork())
 
-    const chainId = (await provider.getNetwork()).chainId;
+    // const chainId = (await provider.getNetwork()).chainId;
 
-    const nft = new ethers.Contract(config[chainId].nft.address, NFT_ABI, provider);
-    setNFT(nft);
+    // const nft = new ethers.Contract(config[chainId].nft.address, NFT_ABI, provider);
+    // setNFT(nft);
 
-    // Fetch accounts
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    const account = ethers.utils.getAddress(accounts[0])
-    setAccount(account)
+    // // Fetch accounts
+    // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    // const account = ethers.utils.getAddress(accounts[0])
+    // setAccount(account)
 
-    // fetch countdown
-    const allowMintingOn = await nft.allowMintingOn();
-    setRevealTime(allowMintingOn.toString() + '000');
+    // // fetch countdown
+    // const allowMintingOn = await nft.allowMintingOn();
+    // setRevealTime(allowMintingOn.toString() + '000');
 
-    const maxSuply = await nft.maxSupply();
-    setMaxSupply(maxSuply)
-    const totalSupply = await nft.totalSupply();
-    setTotalSupply(totalSupply)
-    const cost = await nft.cost();
-    setCost(cost)
-    const balance = await nft.balanceOf(account);
-    setBalance(balance)
+    // const maxSuply = await nft.maxSupply();
+    // setMaxSupply(maxSuply)
+    // const totalSupply = await nft.totalSupply();
+    // setTotalSupply(totalSupply)
+    // const cost = await nft.cost();
+    // setCost(cost)
+    // const balance = await nft.balanceOf(account);
+    // setBalance(balance)
+    // console.log('Balance:', balance)
 
-    let tokenIds = await nft.walletOfOwner(account);
-    setTokenIds(tokenIds)
-    const latestNft = tokenIds.length - 1;
-    setLatestNFT(latestNft)
-    console.log('This is the latest nft:', latestNft)
+    // let tokenIds = await nft.walletOfOwner(account);
+    // console.log('Token IDs:', tokenIds)
+    // setTokenIds(tokenIds)
+    // const latestNft = tokenIds.length - 1;
+    // setLatestNFT(latestNft)
+    // console.log('This is the latest nft:', latestNft)
 
-
-    setIsLoading(false)
+    // setIsLoading(false)
+    try {
+      // Initiate provider
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      setProvider(provider);
+      
+      const network = await provider.getNetwork()
+      console.log('Provider Network:', network)
+      const chainId = network.chainId;
+  
+      // Initialize contract
+      const nft = new ethers.Contract(config[chainId].nft.address, NFT_ABI, provider);
+      console.log('NFT Contract Address:', config[chainId].nft.address);
+      setNFT(nft);
+  
+      // Fetch accounts
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      const account = ethers.utils.getAddress(accounts[0])
+      setAccount(account)
+  
+      try {
+        // Essential calls
+        const maxSuply = await nft.maxSupply();
+        setMaxSupply(maxSuply)
+        const totalSupply = await nft.totalSupply();
+        setTotalSupply(totalSupply)
+        const cost = await nft.cost();
+        setCost(cost)
+        const balance = await nft.balanceOf(account);
+        setBalance(balance)
+        console.log('Balance:', balance)
+        
+        // Only try to fetch token IDs if balance > 0
+        if (balance > 0) {
+          try {
+            let tokenIds = await nft.walletOfOwner(account);
+            setTokenIds(tokenIds)
+            const latestNft = tokenIds.length - 1;
+            setLatestNFT(latestNft)
+          } catch (error) {
+            console.warn('Failed to fetch wallet tokens:', error)
+            setTokenIds([])
+            setLatestNFT(null)
+          }
+        }
+  
+        try {
+          const allowMintingOn = await nft.allowMintingOn();
+          setRevealTime(allowMintingOn.toString() + '000');
+        } catch (error) {
+          console.warn('Failed to fetch minting time:', error)
+          setRevealTime(0)
+        }
+      } catch (error) {
+        console.error('Contract interaction failed:', error)
+      }
+  
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Failed to load blockchain data:', error)
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -81,7 +144,7 @@ function App() {
     <Container>
       <Navigation account={account} />
 
-      <h1 className='my-4 text-center'>AI Punks</h1>
+      <h1 className='my-4 text-center'>CC3 Punks</h1>
 
       {isLoading ? (
         <Loading />

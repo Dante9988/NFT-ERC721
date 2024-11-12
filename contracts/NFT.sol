@@ -60,7 +60,8 @@ contract NFT is ERC721Enumerable, Ownable {
     }
 
     function walletOfOwner(address _owner) public view returns(uint[] memory) {
-        require(msg.sender != address(0));
+        require(_owner != address(0), "Invalid owner address");
+        require(balanceOf(_owner) > 0, "No tokens owned by this address");
         uint ownerTokenCount = balanceOf(_owner);
         uint[] memory tokenIds = new uint[](ownerTokenCount);
         for(uint i; i < ownerTokenCount; i++) {

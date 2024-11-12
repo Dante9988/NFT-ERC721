@@ -13,8 +13,8 @@ const tokens = (n) => {
 const ether = tokens
 
 async function main() {
-  const NAME = 'AI Punks'
-  const SYMBOL = 'AIP'
+  const NAME = 'CC3 Punks'
+  const SYMBOL = 'CC3P'
   const COST = ether(10)
   const MAX_SUPPLY = 25
   const BASE_URI = 'ipfs://QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/'
