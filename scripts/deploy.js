@@ -19,6 +19,7 @@ async function main() {
   const MAX_SUPPLY = 25
   const BASE_URI = 'ipfs://QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/'
   const ALLOW_MINTING_ON = (Date.now() + 120000).toString().slice(0, 10) // 2 mins from now
+  console.log(ALLOW_MINTING_ON)
 
   // Deploy Token
   const NFT = await hre.ethers.getContractFactory('NFT')

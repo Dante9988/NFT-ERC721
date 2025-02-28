@@ -6,7 +6,7 @@ require('dotenv').config();
 const DEFAULT_OWNER = process.env.PRIVATE_KEY;
 
 module.exports = {
-  solidity: "0.8.9",
+  solidity: "0.8.20",
   networks: {
     hardhat:{
       allowUnlimitedContractSize: true,
@@ -26,5 +26,20 @@ module.exports = {
       chainId: 11155111,
       accounts: [`${DEFAULT_OWNER}`],
     } 
+  },
+  etherscan: {
+    apiKey: {
+      cc3: "ABC"
+    },
+    customChains: [
+      {
+        network: "cc3",
+        chainId: 102031,
+        urls: {
+          apiURL: "https://creditcoin-testnet.blockscout.com/api",
+          browserURL: "https://creditcoin-testnet.blockscout.com/",
+        },
+      }
+    ]
   },
 };

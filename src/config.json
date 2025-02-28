@@ -1,7 +1,7 @@
 {
   "31337": {
     "nft": {
-      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+      "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3"
     }
   },
   "11155111": {
@@ -11,7 +11,7 @@
   },
   "102031": {
     "nft": {
-      "address": "0x1d013d5F8BD0dC37037EE31336ed2B567469Af68"
+      "address": "0x9f6D5133505012B27D931Cc9f94a1C0E1Ee1586b"
     }
   }
 }
