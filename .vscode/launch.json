@@ -4,13 +4,36 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Run Artillery Test",
+            "name": "Run Artillery Test (Dev)",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/node_modules/.bin/artillery",
             "args": [
                 "run",
+                "-e",
+                "dev",
+                "${workspaceFolder}/performance/src/scenarios/nft-tests.yml"
+            ],
+            "console": "integratedTerminal",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "sourceMaps": true,
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run Artillery Test (Test)",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/node_modules/.bin/artillery",
+            "args": [
+                "run",
+                "-e",
+                "test",
                 "${workspaceFolder}/performance/src/scenarios/nft-tests.yml"
             ],
             "console": "integratedTerminal",

@@ -9,9 +9,10 @@ export { config };
 // Function to set up transaction history request
 export async function setupTransactionHistoryRequest(context: any, events: any) {
   console.log('\n=== Starting Request Setup ===');
-  
+  console.log("DEBUG: context.variables", context.variables);
+
   // Get the public address from variables
-  const publicAddress = context.variables.publicAddress;
+  const publicAddress = context.vars.publicAddress;
   console.log('Public Address:', publicAddress);
   // Use the environment's private key to sign
   const signature = await signatureService.getNewFormatEvmRequestSignature(

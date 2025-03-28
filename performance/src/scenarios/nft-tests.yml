@@ -48,7 +48,7 @@ scenarios:
       - get:
           url: "/history/v1/evm/{{network}}/{{publicAddress}}"
           headers:
-            "REQUEST-SIGNATURE": "{{ signature }}"
+            "REQUEST-SIGNATURE": "eyJ0eXBlIjoiZXRoLXBlcnNvbmFsIiwibWVzc2FnZSI6Im1lc3NhZ2UiLCJhZGRyZXNzIjoiMHhmNjhjRDYxRjAxZEQ0MDg5MWM4Q0E4OTkzNWVlMTFmYkE0QmU1ZDNDIiwiZXhwaXJhdGlvbiI6IjIwMjUtMDMtMjkgMTk6MTg6NDMgVVRDIiwic2lnbmF0dXJlIjoiMHgxZTMxMjI5ZDI0ZGMwYTFlZGY1OTc5NGUwYTMxM2NlYTQ2MjA1ZWI3ZGYzNmM1YWM2ODIxZDk0OTA1YWFjYTY3NDZiZWM2OWYzNDc1OTE2NGE5YmJkY2Q3NTJlY2E4MzBlMjRhZDEyY2U4OGJkMTE5NDY2Y2QzM2QyMTZkNjBhZTFjIn0="
             "Content-Type": "application/json"
           expect:
             statusCode: 200
