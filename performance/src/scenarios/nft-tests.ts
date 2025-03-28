@@ -8,8 +8,10 @@ export { config };
 
 // Function to set up transaction history request
 export function setupTransactionHistoryRequest(context: any, events: any, done: () => void) {
-  // Get a random address from our test addresses
-  const publicAddress = getRandomAddress(config.addresses.testAddresses);
+  console.log('\n=== Starting Request Setup ===');
+  
+  // Use the first address for testing
+  const publicAddress = "0x0c1EB5769c5B760c9F9dE8B914b95192b43b6b33";
   
   // Use the environment's private key to sign
   const signature = signatureService.getNewFormatEvmRequestSignature(
@@ -22,32 +24,28 @@ export function setupTransactionHistoryRequest(context: any, events: any, done: 
   context.vars.signature = signature;
   context.vars.publicAddress = publicAddress;
   context.vars.network = context.variables.network || 'cc3-testnet';
+  
+  // Log the request details for debugging
+  console.log('Request Variables:');
+  console.log(JSON.stringify(context.vars, null, 2));
+  console.log('=====================\n');
+  
   return done();
-}
-
-// Helper function to get random address
-function getRandomAddress(addresses: string[]) {
-  return addresses[Math.floor(Math.random() * addresses.length)];
 }
 
 // Function to log response details
 export function logResponseDetails(context: any, events: any) {
+  console.log('\n=== Response Received ===');
   const response = context.response;
-  console.log('\n=== API Response ===');
-  console.log(`Address: ${context.vars.publicAddress}`);
-  console.log(`Network: ${context.vars.network}`);
-  console.log(`Status Code: ${response.statusCode}`);
-  console.log(`Response Time: ${response.timings.phases.firstByte}ms`);
-  console.log('Response Body:', JSON.stringify(response.body, null, 2));
+  console.log('Response Object:', JSON.stringify(response, null, 2));
   console.log('==================\n');
 }
 
 // Function to log error details
 export function logError(context: any, events: any) {
-  console.log('\n=== API Error ===');
-  console.log(`Address: ${context.vars.publicAddress}`);
-  console.log(`Network: ${context.vars.network}`);
-  console.log(`Error: ${context.error}`);
+  console.log('\n=== Error Occurred ===');
+  console.log('Context:', JSON.stringify(context, null, 2));
+  console.log('Events:', JSON.stringify(events, null, 2));
   console.log('==================\n');
 }
 
@@ -61,9 +59,10 @@ export const scenarios = [
       },
       {
         get: {
-          url: "/history/v1/evm/{{ network }}/{{ publicAddress }}",
+          url: "https://api-test.creditcoin.org/history/v1/evm/{{ network }}/{{ publicAddress }}",
           headers: {
-            "REQUEST-SIGNATURE": "{{ signature }}"
+            "REQUEST-SIGNATURE": "{{ signature }}",
+            "Content-Type": "application/json"
           },
           capture: {
             json: "$",

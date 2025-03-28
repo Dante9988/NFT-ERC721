@@ -1,11 +1,12 @@
 import { config as dotenvConfig } from 'dotenv';
 import path from 'path';
+import { scenarios } from '../scenarios/nft-tests';
 
 dotenvConfig({ path: path.resolve(__dirname, '../../../.env') });
 
 export const config = {
   target: "https://api-test.creditcoin.org",
-  processor: "../scenarios/nft-tests.ts",
+  processor: scenarios,
   environments: {
     dev: {
       target: "https://api-dev.creditcoin.org",
@@ -45,5 +46,10 @@ export const config = {
         "responseBody"
       ]
     }
+  },
+  debug: true,
+  ensure: {
+    maxErrorRate: 1,
+    maxResponseTime: 2000
   }
 }; 
