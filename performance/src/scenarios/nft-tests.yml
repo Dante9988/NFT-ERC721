@@ -1,13 +1,25 @@
 config:
   target: "https://api-test.creditcoin.org"
   processor: "./nft-tests.ts"
-  phases:
-    - duration: 1
-      arrivalCount: 1
-      name: "Single test run"
-  variables:
-    network: "102031"
-    publicAddress: "0xf68cD61F01dD40891c8CA89935ee11fbA4Be5d3C"
+  environments:
+    dev:
+      target: "https://api-dev.creditcoin.org"
+      phases:
+        - duration: 1
+          arrivalCount: 1
+          name: "Single test run"
+      variables:
+        network: "102031"
+        publicAddress: "0xf68cD61F01dD40891c8CA89935ee11fbA4Be5d3C"
+    test:
+      target: "https://api-test.creditcoin.org"
+      phases:
+        - duration: 1
+          arrivalCount: 1
+          name: "Single test run"
+      variables:
+        network: "102031"
+        publicAddress: "0xf68cD61F01dD40891c8CA89935ee11fbA4Be5d3C"
   plugins:
     ensure: {}
     metrics-by-endpoint: {}

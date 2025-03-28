@@ -12,7 +12,7 @@ export async function setupTransactionHistoryRequest(context: any, events: any) 
   
   // Get the public address from variables
   const publicAddress = context.variables.publicAddress;
-  
+  console.log('Public Address:', publicAddress);
   // Use the environment's private key to sign
   const signature = await signatureService.getNewFormatEvmRequestSignature(
     process.env.PRIVATE_KEY || '',
