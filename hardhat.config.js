@@ -4,6 +4,8 @@ require('dotenv').config();
 /** @type import('hardhat/config').HardhatUserConfig */
 
 const DEFAULT_OWNER = process.env.PRIVATE_KEY;
+const DEFAULT_OWNER_2 = process.env.CC3_PRIVATE_KEY;
+const DEFAULT_OWNER_3 = process.env.CC3_PRIVATE_KEY_2;
 
 module.exports = {
   solidity: "0.8.20",
@@ -17,7 +19,7 @@ module.exports = {
     cc3: {
       url: 'https://rpc.cc3-testnet.creditcoin.network',
       chainId: 102031,
-      accounts: [`${DEFAULT_OWNER}`],
+      accounts: [`${DEFAULT_OWNER}`, `${DEFAULT_OWNER_2}`, `${DEFAULT_OWNER_3}`],
       gas: 5000000,
       gasPrice: 20000000000,
     },
