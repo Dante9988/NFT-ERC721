@@ -1,0 +1,45 @@
+config:
+  target: "https://api-test.creditcoin.org"
+  processor: "./nft-tests.ts"
+  phases:
+    - duration: 1
+      arrivalCount: 1
+      name: "Single test run"
+  variables:
+    network: "102031"
+    publicAddress: "0xf68cD61F01dD40891c8CA89935ee11fbA4Be5d3C"
+  plugins:
+    ensure: {}
+    metrics-by-endpoint: {}
+  ensure:
+    maxErrorRate: 1
+    maxResponseTime: 20000
+  debug: true
+  output:
+    csv:
+      path: "data.csv"
+      columns:
+        - "timestamp"
+        - "address"
+        - "network"
+        - "statusCode"
+        - "responseTime"
+        - "responseBody"
+  # Load environment variables
+  environment:
+    PRIVATE_KEY: "${PRIVATE_KEY}"
+
+scenarios:
+  - name: "Get Transaction History"
+    flow:
+      - function: "setupTransactionHistoryRequest"
+      - get:
+          url: "/history/v1/evm/{{network}}/{{publicAddress}}"
+          headers:
+            "REQUEST-SIGNATURE": "{{ signature }}"
+            "Content-Type": "application/json"
+          expect:
+            statusCode: 200
+      - function: "logResponseDetails"
+    afterScenario: "logError" 
+    

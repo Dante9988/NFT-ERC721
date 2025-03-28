@@ -1,24 +1,24 @@
 import { ethers } from 'ethers';
 
 export class SignatureService {
-  private getUTCPlusOneHour(): string {
+  private getUTCPlus24Hours(): string {
     const date = new Date();
-    date.setHours(date.getHours() + 1);
+    date.setHours(date.getHours() + 24); // changed from +1 to +24
     return date.toISOString();
   }
 
-  public getNewFormatEvmRequestSignature(privateKey: string, message: string, publicAddress: string): string {
-    const expiration = this.getUTCPlusOneHour();
+  public async getNewFormatEvmRequestSignature(privateKey: string, message: string, publicAddress: string = ""): Promise<string> {
+    const expiration = this.getUTCPlus24Hours();
     const fullMessage = `${message}\n\nExpiration: ${expiration}`;
     
     const wallet = new ethers.Wallet(privateKey);
     const messageBytes = ethers.utils.toUtf8Bytes(fullMessage);
-    const signature = wallet.signMessage(messageBytes);
+    const signature = await wallet.signMessage(messageBytes);
 
     const signatureObject = {
       type: "eth-personal",
       message: message,
-      address: publicAddress,
+      address: wallet.address,
       expiration: expiration,
       signature: signature
     };

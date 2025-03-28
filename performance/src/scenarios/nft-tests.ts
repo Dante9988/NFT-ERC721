@@ -7,30 +7,33 @@ const signatureService = new SignatureService();
 export { config };
 
 // Function to set up transaction history request
-export function setupTransactionHistoryRequest(context: any, events: any, done: () => void) {
+export async function setupTransactionHistoryRequest(context: any, events: any) {
   console.log('\n=== Starting Request Setup ===');
   
-  // Use the first address for testing
-  const publicAddress = "0x0c1EB5769c5B760c9F9dE8B914b95192b43b6b33";
+  // Get the public address from variables
+  const publicAddress = context.variables.publicAddress;
   
   // Use the environment's private key to sign
-  const signature = signatureService.getNewFormatEvmRequestSignature(
+  const signature = await signatureService.getNewFormatEvmRequestSignature(
     process.env.PRIVATE_KEY || '',
     'message',
-    publicAddress
+    publicAddress  // Pass the public address to signature generation
   );
 
   // Set the data for the request
-  context.vars.signature = signature;
-  context.vars.publicAddress = publicAddress;
-  context.vars.network = context.variables.network || 'cc3-testnet';
+  context.vars = {
+    signature,
+    publicAddress,
+    network: "102031"
+  };
   
   // Log the request details for debugging
   console.log('Request Variables:');
-  console.log(JSON.stringify(context.vars, null, 2));
+  console.log('Public Address:', publicAddress);
+  console.log('Network:', context.vars.network);
+  console.log('Signature:', signature);
+  console.log('Private Key Set:', !!process.env.PRIVATE_KEY);
   console.log('=====================\n');
-  
-  return done();
 }
 
 // Function to log response details
@@ -59,7 +62,7 @@ export const scenarios = [
       },
       {
         get: {
-          url: "https://api-test.creditcoin.org/history/v1/evm/{{ network }}/{{ publicAddress }}",
+          url: "/history/v1/evm/{{ network }}/{{ publicAddress }}",
           headers: {
             "REQUEST-SIGNATURE": "{{ signature }}",
             "Content-Type": "application/json"

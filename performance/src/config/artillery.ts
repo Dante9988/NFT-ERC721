@@ -29,8 +29,6 @@ export const config = {
   },
   addresses: {
     testAddresses: [
-      "0x0c1EB5769c5B760c9F9dE8B914b95192b43b6b33",
-      "0x9e9c062A4DED753089Fe5132EEf2c3999CE69374",
       "0xf68cD61F01dD40891c8CA89935ee11fbA4Be5d3C"
     ]
   },
