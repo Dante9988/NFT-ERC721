@@ -6,21 +6,21 @@ async function main() {
   const maxSupply = 1000;
   const allowMintingOn = currentTimestamp + 60; // Allow minting after 1 minute
   const baseURI = "ipfs://QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/";
+  console.log(allowMintingOn)
 
   const NFT = await ethers.getContractFactory("NFT");
   const nft = await NFT.deploy(
-    "MyNFT",
-    "MNFT",
+    "CRYPTOPUNKS",
+    "CPP",
     cost,
     maxSupply,
     allowMintingOn,
     baseURI
   );
 
-  await nft.waitForDeployment();
-  const address = await nft.getAddress();
-  console.log("NFT deployed to:", address);
-  console.log("Contract address for Artillery config:", address);
+  await nft.deployed();
+  console.log("NFT deployed to:", nft.address);
+  console.log("Contract address for Artillery config:", nft.address);
 }
 
 main().catch((error) => {

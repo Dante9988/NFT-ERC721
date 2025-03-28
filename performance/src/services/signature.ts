@@ -7,7 +7,7 @@ export class SignatureService {
     return date.toISOString();
   }
 
-  public getNewFormatEvmRequestSignature(privateKey: string, message: string): string {
+  public getNewFormatEvmRequestSignature(privateKey: string, message: string, publicAddress: string): string {
     const expiration = this.getUTCPlusOneHour();
     const fullMessage = `${message}\n\nExpiration: ${expiration}`;
     
@@ -18,7 +18,7 @@ export class SignatureService {
     const signatureObject = {
       type: "eth-personal",
       message: message,
-      address: wallet.address,
+      address: publicAddress,
       expiration: expiration,
       signature: signature
     };
