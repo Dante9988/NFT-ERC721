@@ -1,14 +1,13 @@
-import { ethers } from "ethers";
-import hre from "hardhat";
+import { ethers } from "hardhat";
 
 async function main() {
   const currentTimestamp = Math.floor(Date.now() / 1000);
-  const cost = ethers.parseEther("0.01"); // 0.01 ETH
+  const cost = ethers.utils.parseEther("0.01"); // 0.01 ETH
   const maxSupply = 1000;
   const allowMintingOn = currentTimestamp + 60; // Allow minting after 1 minute
   const baseURI = "ipfs://QmQPEMsfd1tJnqYPbnTQCjoa8vczfsV1FmqZWgRdNQ7z3g/";
 
-  const NFT = await hre.ethers.getContractFactory("NFT");
+  const NFT = await ethers.getContractFactory("NFT");
   const nft = await NFT.deploy(
     "MyNFT",
     "MNFT",
@@ -19,7 +18,9 @@ async function main() {
   );
 
   await nft.waitForDeployment();
-  console.log("NFT deployed to:", await nft.getAddress());
+  const address = await nft.getAddress();
+  console.log("NFT deployed to:", address);
+  console.log("Contract address for Artillery config:", address);
 }
 
 main().catch((error) => {

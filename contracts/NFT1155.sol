@@ -45,13 +45,14 @@ contract NFT1155 is ERC1155, Ownable {
         uint256 _cost,
         uint256 _maxSupplyPerToken,
         uint256 _allowMintingOn
-    ) ERC1155(_baseURI) Ownable(msg.sender) {
+    ) ERC1155(_baseURI) Ownable() {
         name = _name;
         symbol = _symbol;
         baseURI = _baseURI;
         cost = _cost;
         maxSupplyPerToken = _maxSupplyPerToken;
         allowMintingOn = _allowMintingOn;
+        _transferOwnership(msg.sender);
     }
     
     modifier canMint() {
